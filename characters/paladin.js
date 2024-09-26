@@ -4,6 +4,7 @@ export class Paladin extends Character {
   constructor(name) {
     super(name, 16, 3, 160, 40, Paladin.healingLightning);
     this.class = 'Paladin';
+    this.specialAttackName = "Healing Lightning";
     this.healingLightning = false;
   }
 

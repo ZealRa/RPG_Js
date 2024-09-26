@@ -4,6 +4,7 @@ export class Monk extends Character {
   constructor(name) {
     super(name, 8, 2, 200, 25, Monk.heal);
     this.class = 'Monk';
+    this.specialAttackName = "Heal";
     this.heal = false;
   }
 

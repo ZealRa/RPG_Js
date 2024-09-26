@@ -4,6 +4,7 @@ export class Berzerker extends Character {
   constructor(name) {
     super(name, 8, 4, 0, 0, Berzerker.rage);
     this.class = 'Berzerker';
+    this.specialAttackName = "Rage";
     this.rage = false;
   }
 

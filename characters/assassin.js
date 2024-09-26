@@ -5,8 +5,8 @@ export class Assassin extends Character {
     super(name, 6, 6, 20, 20, Assassin.shadowHit);
     this.isImmune = false;
     this.class = 'Assassin';
+    this.specialAttackName = "Shadow Hit";
     this.shadowHit = false;
-
   }
 
   static shadowHit(attacker, target) {
