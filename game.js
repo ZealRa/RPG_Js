@@ -4,6 +4,7 @@ import { Monk } from './characters/monk.js';
 import { Berzerker } from './characters/berzerker.js';
 import { Assassin } from './characters/assassin.js';
 import { Wizard } from './characters/wizard.js';
+import { Ranger } from './characters/ranger.js';
 import readline from 'readline';
 
 const rl = readline.createInterface({
@@ -19,7 +20,7 @@ export class Game {
   }
 
   generateRandomPlayers(numberOfPlayers) {
-    const classes = [Fighter, Paladin, Monk, Berzerker, Assassin, Wizard];
+    const classes = [Fighter, Paladin, Monk, Berzerker, Assassin, Wizard, Ranger];
     const names = [
       'Arthas', 'Kael', 'Jaina', 'Tyrande', 'Gul\'dan',
       'Illidan', 'Thrall', 'Ragnaros', 'Muradin', 'Vol\'jin'
@@ -56,8 +57,22 @@ export class Game {
   showCharacterSummary() {
     console.log("Résumé des personnages :");
     this.players.forEach((player, index) => {
-      console.log(`${index + 1}. ${player.name} - Class: ${player.class} - HP: ${player.hp}, Mana: ${player.mana}, Dmg: ${player.dmg}`);
+      let classIcon = this.getClassIcon(player.class);
+      console.log(`${index + 1}. ${player.name} ${classIcon} - Class: ${player.class} - HP: ${player.hp}, Mana: ${player.mana}, Dmg: ${player.dmg}`);
     });
+  }
+
+  getClassIcon(className) {
+    const icons = {
+      'Fighter': '⚔️',
+      'Paladin': '🛡️',
+      'Monk': '🙏',
+      'Berzerker': '🧔',
+      'Assassin': '🗡️',
+      'Wizard': '🔥',
+      'Ranger': ' 🏹'
+    };
+    return icons[className] || '';
   }
 
   choosePlayerCharacter() {
@@ -75,7 +90,7 @@ export class Game {
   }
 
   async startTurn() {
-    console.log(`Tour ${11 - this.turnLeft}`);
+    console.log(`\n=== Tour ${11 - this.turnLeft} ===\n`);
     this.players = this.shufflePlayers(this.players);
 
     for (const player of this.players) {
@@ -97,12 +112,13 @@ export class Game {
       const winner = this.players.find(p => p.status === "playing");
       if (winner) {
         winner.status = "winner";
-        console.log(`${winner.name} est le gagnant !`);
+        console.log(`\n🎉 ${winner.name} est le gagnant ! 🎉\n`);
       }
     } else {
       this.startTurn();
     }
   }
+
 
   computerAction(player) {
     const fatalTargets = this.getFatalTargets(player);
@@ -110,6 +126,7 @@ export class Game {
     if (fatalTargets.length > 0) {
       const target = fatalTargets[Math.floor(Math.random() * fatalTargets.length)];
       player.dealDamage(target);
+      console.log(`💀 ${player.name} attaque fatalement ${target.name} !`);
     } else {
       const target = this.getRandomTarget(player);
       if (!target) return;
@@ -118,17 +135,18 @@ export class Game {
 
       if (action === 'attack') {
         player.dealDamage(target);
-        console.log(`${player.name} (contrôlé par l'ordinateur) attaque ${target.name}.`);
+        console.log(`⚔️ ${player.name} (contrôlé par l'ordinateur) attaque ${target.name}.`);
       } else {
         if (player.specialAttack) {
           player.specialAttack(player, target);
-          console.log(`${player.name} (contrôlé par l'ordinateur) utilise ${player.specialAttackName} sur ${target.name}.`);
+          console.log(`🔥 ${player.name} (contrôlé par l'ordinateur) utilise ${player.specialAttackName} sur ${target.name}.`);
         } else {
           console.log(`${player.name} n'a pas d'attaque spéciale disponible.`);
         }
       }
     }
   }
+
 
   getFatalTargets(player) {
     return this.players.filter(p => p !== player && p.status === "playing" && p.hp <= player.dmg);

@@ -19,13 +19,16 @@ export class Fighter extends Character {
     }
   }
 
-  takeDamage(damage) {
-    if (this.darkVisionActive) {
-      damage -= 2;
-      this.darkVisionActive = false;
+  takeDamage(damage, ignoreReduction = false) {
+    if (this.reducedDamageNextTurn && !ignoreReduction) {
+      damage = Math.max(0, damage - 2);
+      console.log(`${this.name} réduit les dégâts reçus de 2 grâce à ${this.specialAttackName}.`);
     }
-    super.takeDamage(damage);
+    this.hp -= damage;
+    console.log(`${this.name} reçoit ${damage} dégâts. HP restants: ${this.hp}`);
+    this.reducedDamageNextTurn = false;
   }
 }
+
 
 const grace = new Fighter('Grace');

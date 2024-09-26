@@ -11,7 +11,7 @@ export class Wizard extends Character {
     if (attacker.mana >= attacker.specialAttackCost) {
       attacker.dealDamage(target, 7);
       attacker.mana -= attacker.specialAttackCost;
-      console.log(`${attacker.name} utilise Fireball sur ${target.name} et inflige 7 dégâts. Il lui reste ${attacker.mana} points de mana.`);
+      console.log(`${attacker.name} utilise Fireball sur ${target.name}. Il lui reste ${attacker.mana} points de mana.`);
     } else {
       console.log(`${attacker.name} n'a pas assez de mana pour utiliser Fireball.`);
     }
